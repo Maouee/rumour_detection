@@ -1,7 +1,7 @@
 import glob
 import json
 
-def main():
+def data_to_dict():
 
     # Liste des noms de dossiers
     folders = [
@@ -28,6 +28,8 @@ def main():
 
         # Affichage du résumé pour le dossier
         summarize_results(dico)
+
+    return dico
 
 # Traitement des "non-rumeurs"
 def preprocess_non_rumours(non_rumours_source_tweets_path, dico):
@@ -57,6 +59,3 @@ def summarize_results(dico):
     nb_true_news = len([tweet for tweet in dico.values() if tweet['label'] == 'true_news'])
     print(f"nb fake news : {nb_fake_news}")
     print(f"nb true news : {nb_true_news}")
-
-if __name__ == "__main__":
-    main()  
