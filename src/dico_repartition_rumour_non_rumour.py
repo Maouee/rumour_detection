@@ -24,8 +24,7 @@ def main():
 
         # Chemin vers les tweets classifiés comme "rumeurs" et leurs annotations
         rumours_source_tweets_path = f'../data/{folder}/rumours/*/source-tweets/*'
-        rumours_annotation_path = f'../data/{folder}/rumours/*/annotation.json'
-        dico = preprocess_rumours(rumours_source_tweets_path, rumours_annotation_path, dico)
+        dico = preprocess_rumours(rumours_source_tweets_path, dico)
 
         # Affichage du résumé pour le dossier
         summarize_results(dico)
@@ -42,7 +41,7 @@ def preprocess_non_rumours(non_rumours_source_tweets_path, dico):
     return dico
 
 # Traitement des "rumeurs"
-def preprocess_rumours(rumours_source_tweets_path, rumours_annotation_path, dico):
+def preprocess_rumours(rumours_source_tweets_path, dico):
     for file in glob.glob(rumours_source_tweets_path):
         with open(file, 'r') as f:
             data = json.load(f)
