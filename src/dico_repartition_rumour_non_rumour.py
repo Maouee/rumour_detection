@@ -18,6 +18,8 @@ def data_to_dict():
     for folder in folders:
         print(f"\nTraitement du dossier : {folder}")
 
+        dico_theme = {}
+
         # Chemin vers les tweets classifiés comme "non-rumeurs"
         non_rumours_source_tweets_path = f'../data/{folder}/non-rumours/*/source-tweets/*'
         dico = preprocess_non_rumours(non_rumours_source_tweets_path, dico)
@@ -27,7 +29,10 @@ def data_to_dict():
         dico = preprocess_rumours(rumours_source_tweets_path, dico)
 
         # Affichage du résumé pour le dossier
-        summarize_results(dico)
+        summarize_results(dico_theme)
+    
+    print("\nRésumé global :")
+    summarize_results(dico)
 
     return dico
 
