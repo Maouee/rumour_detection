@@ -30,9 +30,9 @@ def main():
     rf_result = rf_train(X_train_resampled, X_test_vect, y_train_resampled, y_test)
 
     # Afficher les résultats
-    print(f"SVM result : {svm_result}")
-    print(f"Tree Classifier result : {tree_result}")
-    print(f"Random Forest result : {rf_result}")
+    print(f"SVM result :\n {svm_result}")
+    print(f"Tree Classifier result :\n {tree_result}")
+    print(f"Random Forest result :\n {rf_result}")
 
 
 if __name__ == "__main__":

@@ -17,7 +17,7 @@ def train_and_evaluation(X_train, X_test, y_train, y_test):
     y_pred = rf_model.predict(X_test)
 
     #Calcul des métriques
-    print("Classification Report :\n")
+    print("Classification Report Random Forest:\n")
     print(classification_report(y_test, y_pred))
 
     #Matrice de confusion

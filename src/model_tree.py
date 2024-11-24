@@ -17,7 +17,7 @@ def train_and_evaluation(X_train, X_test, y_train, y_test) :
     y_pred = tree_model.predict(X_test)
 
     #Calcul des métriques
-    print("Classification Report :\n")
+    print("Classification Report DecisionTree:\n")
     print(classification_report(y_test, y_pred))
 
     #Matrice de confusion
