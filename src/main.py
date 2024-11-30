@@ -44,14 +44,14 @@ def main():
 
     ##Enregistrer les résultats
     ##Rapports de classification : 
-    save_classif_report(y_test, svm_result['y_pred'], '../assets/classif_report/svm_classification_report.txt')
-    save_classif_report(y_test, tree_result['y_pred'], '../assets/classif_report/tree_classification_report.txt')
-    save_classif_report(y_test, rf_result['y_pred'], '../assets/classif_report/rf_classification_report.txt')
+    save_classif_report(y_test, svm_result['y_pred'], 'assets/classif_report/svm_classification_report.txt')
+    save_classif_report(y_test, tree_result['y_pred'], 'assets/classif_report/tree_classification_report.txt')
+    save_classif_report(y_test, rf_result['y_pred'], 'assets/classif_report/rf_classification_report.txt')
 
     ##Matrices de confusion
-    save_matrix(svm_result['confusion_matrix'], '../assets/matrice/svm_confusion_matrix.png')
-    save_matrix(tree_result['confusion_matrix'], '../assets/matrice/tree_confusion_matrix.png')
-    save_matrix(rf_result['confusion_matrix'], '../assets/matrice/rf_confusion_matrix.png')
+    save_matrix(svm_result['confusion_matrix'], 'assets/matrice/svm_confusion_matrix.png')
+    save_matrix(tree_result['confusion_matrix'], 'assets/matrice/tree_confusion_matrix.png')
+    save_matrix(rf_result['confusion_matrix'], 'assets/matrice/rf_confusion_matrix.png')
 
 
 
