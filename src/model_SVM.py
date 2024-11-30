@@ -17,8 +17,7 @@ def train_and_evaluation(X_train, X_test, y_train, y_test) :
     y_pred = svm_model.predict(X_test)
     
     #Calcul des métriques
-    print("Classification Report SVM :\n")
-    print(classification_report(y_test, y_pred))
+    report = classification_report(y_test, y_pred, output_dict=True)
 
     #Matrice de confusion
     matrice = confusion_matrix(y_test, y_pred)
@@ -28,4 +27,4 @@ def train_and_evaluation(X_train, X_test, y_train, y_test) :
     plt.title('Matrice de Confusion SVM')
     plt.show()
     
-    return classification_report(y_test, y_pred)
+    return {'y_pred': y_pred,'classification_report': report, 'confusion_matrix': matrice}
