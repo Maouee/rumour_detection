@@ -35,6 +35,7 @@ def data_to_dict():
 
     print("\nRésumé global :")
     summarize_results(dico_global)
+    # print(dico_global)
 
     return dico_global
 
@@ -115,3 +116,4 @@ def summarize_results(dico_global):
     print(f"None : {nb_none} ({percent_none:.2f}%)")
 
 resultat = data_to_dict()
+# print(resultat)
