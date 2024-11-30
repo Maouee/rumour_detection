@@ -1,138 +1,117 @@
 import glob
 import json
+import os
 
-def calculate_veracity_distribution_with_dict(rumour_path, non_rumour_path, global_counts, global_dict):
-    # Initialisation des compteurs locaux
-    true_count = 0
-    false_count = 0
-    unverified_count = 0
-    none_count = 0
+def data_to_dict():
 
-    # Dictionnaire local pour ce dossier
-    local_dict = {}
+    folders = [
+        "prince-toronto-all-rnr-threads", "ottawashooting-all-rnr-threads", 
+        "charliehebdo-all-rnr-threads", "ferguson-all-rnr-threads", 
+        "gurlitt-all-rnr-threads", "putinmissing-all-rnr-threads", 
+        "germanwings-crash-all-rnr-threads", "ebola-essien-all-rnr-threads", 
+        "sydneysiege-all-rnr-threads"
+    ]
 
-    # Fonction pour analyser les fichiers *rumours*
-    def process_rumours(annotation_files, source_tweets_path):
-        nonlocal true_count, false_count, unverified_count, none_count
-        for file in glob.glob(annotation_files):
-            with open(file, 'r') as f:
-                annotation = json.load(f)
+    # folders = ["one_of_each"]
 
-                # Chargement du texte associé au tweet
-                tweet_id = annotation.get('id', None)
-                tweet_text = None
-                if tweet_id:
-                    tweet_file = f"{source_tweets_path}/{tweet_id}.json"
-                    try:
-                        with open(tweet_file, 'r') as tf:
-                            tweet_data = json.load(tf)
-                            tweet_text = tweet_data.get('text', None)
-                    except FileNotFoundError:
-                        pass
-
-                # Vérifie les annotations pour déterminer la véracité
-                label = "none"
-                if 'misinformation' in annotation and 'true' in annotation:
-                    if int(annotation['misinformation']) == 0 and int(annotation['true']) == 1:
-                        true_count += 1
-                        label = "true"
-                    elif int(annotation['misinformation']) == 1 and int(annotation['true']) == 0:
-                        false_count += 1
-                        label = "false"
-                    elif int(annotation['misinformation']) == 0 and int(annotation['true']) == 0:
-                        unverified_count += 1
-                        label = "unverified"
-                    elif int(annotation['misinformation']) == 1 and int(annotation['true']) == 1:
-                        none_count += 1
-                elif 'misinformation' in annotation and "true" not in annotation:
-                    if int(annotation['misinformation']) == 1:
-                        false_count += 1
-                        label = "false"
-                    elif int(annotation['misinformation']) == 0:
-                        unverified_count += 1
-                        label = "unverified"
-                elif 'misinformation' not in annotation and 'true' in annotation:
-                    none_count += 1
-                else:
-                    none_count += 1
-
-                # Ajout au dictionnaire local
-                if tweet_id:
-                    local_dict[tweet_id] = {'text': tweet_text, 'label': label}
-
-    # Fonction pour analyser les fichiers *non-rumours*
-    def process_non_rumours(source_tweets_path):
-        nonlocal true_count
-        for file in glob.glob(source_tweets_path):
-            with open(file, 'r') as f:
-                tweet_data = json.load(f)
-                tweet_id = tweet_data.get('id', None)
-                tweet_text = tweet_data.get('text', None)
-                if tweet_id:
-                    true_count += 1
-                    local_dict[tweet_id] = {'text': tweet_text, 'label': 'true'}
-
-    # Analyse des *rumours* et *non-rumours*
-    process_rumours(rumour_path, f"{rumour_path.rsplit('/', 3)[0]}/source-tweets")
-    process_non_rumours(f"{non_rumour_path.rsplit('/', 3)[0]}/source-tweets/*")
-
-    # Mise à jour des compteurs globaux
-    global_counts['true'] += true_count
-    global_counts['false'] += false_count
-    global_counts['unverified'] += unverified_count
-    global_counts['none'] += none_count
-
-    # Ajout des données locales au dictionnaire global
-    global_dict.update(local_dict)
-
-    # Affiche les résultats pour le dossier
-    total = true_count + false_count + unverified_count + none_count
-    print(f"\nRépartition des annotations (local) :")
-    print(f"True: {true_count} ({true_count / total * 100:.2f}%)")
-    print(f"False: {false_count} ({false_count / total * 100:.2f}%)")
-    print(f"Unverified: {unverified_count} ({unverified_count / total * 100:.2f}%)")
-    print(f"None: {none_count} ({none_count / total * 100:.2f}%)\n")
-
-
-# Liste des noms de dossiers
-folders = [
-    "prince-toronto-all-rnr-threads", "ottawashooting-all-rnr-threads", 
-    "charliehebdo-all-rnr-threads", "ferguson-all-rnr-threads", 
-    "gurlitt-all-rnr-threads", "putinmissing-all-rnr-threads", 
-    "germanwings-crash-all-rnr-threads", "ebola-essien-all-rnr-threads", 
-    "sydneysiege-all-rnr-threads"
-]
-
-# Initialisation des compteurs globaux et du dictionnaire global
-global_counts = {'true': 0, 'false': 0, 'unverified': 0, 'none': 0}
-global_dict = {}
-
-# Parcours de la liste des dossiers
-for folder in folders:
-    # Chemins pour *rumours* et *non-rumours*
-    rumour_annotations_path = f'../data/{folder}/rumours/*/annotation.json'
-    non_rumour_annotations_path = f'../data/{folder}/non-rumours/*/annotation.json'
-
-    print(f"Traitement du dossier : {folder}")
-    print(f"Chemin des annotations (rumours) : {rumour_annotations_path}")
-    print(f"Chemin des annotations (non-rumours) : {non_rumour_annotations_path}")
+    dico_global = {}
     
-    # Appel de la fonction pour ce dossier
-    calculate_veracity_distribution_with_dict(rumour_annotations_path, non_rumour_annotations_path, global_counts, global_dict)
+    for folder in folders:
+        print(f"\nTraitement du dossier : {folder}")
 
-# Affichage des résultats globaux
-total_global = global_counts['true'] + global_counts['false'] + global_counts['unverified'] + global_counts['none']
-print("\nRépartition des annotations (global) :")
-print(f"True: {global_counts['true']} ({global_counts['true'] / total_global * 100:.2f}%)")
-print(f"False: {global_counts['false']} ({global_counts['false'] / total_global * 100:.2f}%)")
-print(f"Unverified: {global_counts['unverified']} ({global_counts['unverified'] / total_global * 100:.2f}%)")
-print(f"None: {global_counts['none']} ({global_counts['none'] / total_global * 100:.2f}%)\n")
+        dico_local = {}
 
-# Résumé du dictionnaire global
-print("\nRésumé des données collectées :")
-nb_fake_news = len([tweet for tweet in global_dict.values() if tweet['label'] == 'false'])
-nb_true_news = len([tweet for tweet in global_dict.values() if tweet['label'] == 'true'])
-nb_unverified = len([tweet for tweet in global_dict.values() if tweet['label'] == 'unverified'])
-print(f"nb fake news : {nb_fake_news}")
-print(f"nb true news : {nb_true_news}")
-print(f"nb unverified : {nb_unverified}")
+        non_rumours_source_tweets_path = f'../../data/{folder}/non-rumours/*/source-tweets/*'
+        dico_local = preprocess_non_rumours(non_rumours_source_tweets_path)
+
+        rumours_source_tweets_path = f'../../data/{folder}/rumours/*/source-tweets/*'
+        rumours_annotation_path = f'../../data/{folder}/rumours/*/annotation.json'
+        dico_rumours = preprocess_rumours(rumours_source_tweets_path, rumours_annotation_path)
+        dico_local.update(dico_rumours)
+        
+        summarize_results(dico_local)
+
+        dico_global.update(dico_local)
+
+    print("\nRésumé global :")
+    summarize_results(dico_global)
+
+    return dico_global
+
+def preprocess_non_rumours(non_rumours_source_tweets_path):
+    dico_local2 = {}
+    for file in glob.glob(non_rumours_source_tweets_path):
+        with open(file, 'r') as f:
+            data = json.load(f)
+            nr_tweet_text = data['text']
+            nr_tweet_id = data['id']
+            nr_tweet_label = "true_news"
+            dico_local2[nr_tweet_id] = {'text': nr_tweet_text, 'label': nr_tweet_label}
+    return dico_local2
+
+def preprocess_rumours(rumours_source_tweets_path, rumours_annotation_path):
+    # print("chemins source tweet", rumours_source_tweets_path)
+    # print("chemins annotation", rumours_annotation_path)
+    dico_local2 = {}
+    for source_file in glob.glob(rumours_source_tweets_path):
+        # print("source file", source_file)
+        with open(source_file, 'r') as f:
+            data = json.load(f)
+            r_tweet_text = data['text']
+            r_tweet_id = data['id']
+
+            annotation_file = os.path.join(os.path.dirname(os.path.dirname(source_file)), "annotation.json")            
+            # print("annotation file", annotation_file,"\n")
+            with open(annotation_file, 'r') as af:
+                annotations = json.load(af)
+                # print("annotations", annotations)
+                if 'misinformation' in annotations and 'true' in annotations:
+                    # print("il y a misinformation et true")
+                    if int(annotations['misinformation']) == 0 and int(annotations['true']) == 1:
+                        r_tweet_label = "true_news"
+                    elif int(annotations['misinformation']) == 1 and int(annotations['true']) == 0:
+                        r_tweet_label = "fake_news"
+                    elif int(annotations['misinformation']) == 0 and int(annotations['true']) == 0:
+                        r_tweet_label = "unverified"
+                    elif int(annotations['misinformation']) == 1 and int(annotations['true']) == 1:
+                        r_tweet_label = "none"
+
+                elif 'misinformation' in annotations and 'true' not in annotations:
+                    # print("il y a misinformation et pas de true")
+                    if int(annotations['misinformation']) == 1:
+                        r_tweet_label = "fake_news"
+                    elif int(annotations['misinformation']) == 0:
+                        r_tweet_label = "unverified"
+                elif 'misinformation' not in annotations and 'true' in annotations:
+                    # print("il y a true et pas de misinformation")
+                    r_tweet_label = "none"
+                else:
+                    # print("il n'y a ni misinformation ni true")
+                    r_tweet_label = "none"
+                dico_local2[r_tweet_id] = {'text': r_tweet_text, 'label': r_tweet_label}
+    return dico_local2
+
+def summarize_results(dico_global):
+    # Calcul du nombre total de tweets
+    total_tweets = len(dico_global)
+
+    # Comptage des catégories
+    nb_fake_news = len([tweet for tweet in dico_global.values() if tweet['label'] == 'fake_news'])
+    nb_true_news = len([tweet for tweet in dico_global.values() if tweet['label'] == 'true_news'])
+    nb_unverified = len([tweet for tweet in dico_global.values() if tweet['label'] == 'unverified'])
+    nb_none = len([tweet for tweet in dico_global.values() if tweet['label'] == 'none'])
+
+    # Calcul des pourcentages
+    percent_fake_news = (nb_fake_news / total_tweets * 100) if total_tweets > 0 else 0
+    percent_true_news = (nb_true_news / total_tweets * 100) if total_tweets > 0 else 0
+    percent_unverified = (nb_unverified / total_tweets * 100) if total_tweets > 0 else 0
+    percent_none = (nb_none / total_tweets * 100) if total_tweets > 0 else 0
+
+    # Affichage des résultats
+    print(f"Total tweets : {total_tweets}")
+    print(f"Fake news : {nb_fake_news} ({percent_fake_news:.2f}%)")
+    print(f"True news : {nb_true_news} ({percent_true_news:.2f}%)")
+    print(f"Unverified : {nb_unverified} ({percent_unverified:.2f}%)")
+    print(f"None : {nb_none} ({percent_none:.2f}%)")
+
+resultat = data_to_dict()
