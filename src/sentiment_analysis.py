@@ -1,19 +1,9 @@
 ##__IMPORTS__##
 from textblob import TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from dico_repartition_rumour_non_rumour import data_to_dict
-
-def main(): 
-  dico = data_to_dict()
-  fake_news_moyenne, true_news_moyenne = sentiment_analysis(dico)
-  print(f"Moyenne du sous-corpus fake : {fake_news_moyenne:.2f}")
-  print(f"Moyenne du sous-corpus true : {true_news_moyenne:.2f}")
+from dico_repartition_true_false_unverified import data_to_dict
 
 def sentiment_analysis(dico) :
-  """
-  
-  """
-
   #Initialisation de Vader
   analyzer = SentimentIntensityAnalyzer()
 
@@ -43,7 +33,3 @@ def sentiment_analysis(dico) :
   true_news_moyenne = sum(true_news_polarity) / len(true_news_polarity)
 
   return fake_news_moyenne, true_news_moyenne
-
-
-if __name__ == "__main__":
-    main()
