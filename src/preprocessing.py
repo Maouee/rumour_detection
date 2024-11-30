@@ -12,7 +12,7 @@ def conversion_donnees(dico) :
     df = pd.DataFrame.from_dict(dico, orient='index')
 
     #Conversion des étiquettes du df en valeurs numériques
-    df['label'] = df['label'].map({"true_news": 1, "fake_news": 0})
+    df['label'] = df['label'].map({"true_news": 1, "fake_news": 2, "unverified" : 3})
     y = df['label']
     X = df['text']
 
@@ -36,6 +36,6 @@ def apply_smote(X_train, y_train):
     
     """
     #Application de SMOTE pour rééquilibrer les classes
-    smote = SMOTE(random_state=42)
+    smote = SMOTE(random_state=42, sampling_strategy= "minority")
     X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
     return X_resampled, y_resampled
