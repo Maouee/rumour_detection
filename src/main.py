@@ -3,7 +3,7 @@ from preprocessing import conversion_donnees, vectorisation, apply_smote
 from model_SVM import train_and_evaluation as svm_train
 from model_tree import train_and_evaluation as tree_train
 from model_random_forest import train_and_evaluation as rf_train
-from dico_repartition_rumour_non_rumour import data_to_dict
+from dico_repartition_true_false_unverified import data_to_dict
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
