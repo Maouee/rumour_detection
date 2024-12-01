@@ -27,4 +27,4 @@ def train_and_evaluation(X_train, X_test, y_train, y_test) :
     # plt.title('Matrice de Confusion Tree')
     # plt.show()
     
-    return {'y_pred': y_pred,'classification_report': report, 'confusion_matrix': matrice}
+    return {'label_pred': y_pred,'classification_report': report, 'confusion_matrix': matrice}

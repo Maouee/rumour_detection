@@ -38,24 +38,25 @@ def classify_tweets(X_test, y_pred):
     true_news = []
     fake_news = []
 
-    for tweet, label in zip(X_test, y_pred):
+    for i, label in enumerate(y_pred):
+      tweet = X_test.iloc[i] #.iloc car c'est un objet de type Series pandas
       if label == 1:
-        true_news.append(tweet)
+        true_news.append({"text": tweet, "label": 1})
       elif label == 2:
-        fake_news.append(tweet)
+        fake_news.append({"text": tweet, "label": 2})
       elif label == 3:
         continue
-
+    
     return true_news, fake_news
 
-def sentiment_analysis_on_results(X_test): 
+def sentiment_analysis_on_results(tweets): 
    #Initialisation de Vader
   analyzer = SentimentIntensityAnalyzer()
 
   fake_news_polarity = []
   true_news_polarity = []
 
-  for tweet in X_test : 
+  for tweet in tweets :
     texte = tweet["text"]
     label = tweet["label"]
 
@@ -69,14 +70,19 @@ def sentiment_analysis_on_results(X_test):
     #Moyenne des scores de polarité obtenus avec les deux analyseurs
     combined_polarity = (blob_polarity + vader_polarity) / 2
 
-    if label == 0 : 
+    if label == 2 : # Fake news
         fake_news_polarity.append(combined_polarity)       
-    elif label == 1 : 
+    elif label == 1 : # True news
         true_news_polarity.append(combined_polarity)
 
-  if len(fake_news_polarity) > 0:
+   #Calcul le score moyen de polarité pour fake_news et true_news
+  if fake_news_polarity :
     fake_news_moyenne = sum(fake_news_polarity) / len(fake_news_polarity)
-  if len(true_news_polarity) > 0:
+  else : 
+     return 0 
+  if true_news_polarity :
     true_news_moyenne = sum(true_news_polarity) / len(true_news_polarity)
-  
+  else : 
+    return 0
+
   return fake_news_moyenne, true_news_moyenne
