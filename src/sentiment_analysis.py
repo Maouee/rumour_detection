@@ -42,8 +42,8 @@ def classify_tweets(X_test, y_pred):
       tweet = X_test.iloc[i] #.iloc car c'est un objet de type Series pandas
       if label == 1:
         true_news.append({"text": tweet, "label": 1})
-      elif label == 2:
-        fake_news.append({"text": tweet, "label": 2})
+      elif label == 0:
+        fake_news.append({"text": tweet, "label": 0})
       elif label == 3:
         continue
     
@@ -70,7 +70,7 @@ def sentiment_analysis_on_results(tweets):
     #Moyenne des scores de polarité obtenus avec les deux analyseurs
     combined_polarity = (blob_polarity + vader_polarity) / 2
 
-    if label == 2 : # Fake news
+    if label == 0 : # Fake news
         fake_news_polarity.append(combined_polarity)       
     elif label == 1 : # True news
         true_news_polarity.append(combined_polarity)
