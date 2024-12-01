@@ -16,8 +16,8 @@ def main():
 
     ##Analyse des sentiments
     fake_news_moyenne, true_news_moyenne = sentiment_analysis(dico)
-    print(f"Moyenne du sous-corpus rumeur : {fake_news_moyenne:.5f}")
-    print(f"Moyenne du sous-corpus non/rumeur : {true_news_moyenne:.5f}")
+    print(f"Moyenne du sous-corpus fake news : {fake_news_moyenne:.5f}")
+    print(f"Moyenne du sous-corpus true news : {true_news_moyenne:.5f}")
 
     ##Chargement des données 
     y, X = conversion_donnees(dico)
