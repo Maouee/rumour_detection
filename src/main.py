@@ -5,7 +5,7 @@ from model_tree import train_and_evaluation as tree_train
 from model_random_forest import train_and_evaluation as rf_train
 from save_results import save_classif_report, save_matrix
 from dico_repartition_true_false_unverified import data_to_dict
-from sentiment_analysis import sentiment_analysis
+from sentiment_analysis import sentiment_analysis, classify_tweets, sentiment_analysis_on_results
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -31,10 +31,6 @@ def main():
     ##Génération d'exemples synthétiques de la classe minoritaire (fake_news) avec SMOTE
     X_train_resampled, y_train_resampled = apply_smote(X_train_vect, y_train)
 
-    ##Afficher la taille avant et après SMOTE
-    # print(f"Taille d'origine de X_train_vect : {X_train_vect.shape}")
-    # print(f"Taille après SMOTE : {X_train_resampled.shape}")
-    
     #Entraînement et évaluation des modèles
     svm_result = svm_train(X_train_resampled, X_test_vect, y_train_resampled, y_test)
     tree_result = tree_train(X_train_resampled, X_test_vect, y_train_resampled, y_test)
@@ -50,18 +46,41 @@ def main():
     print(f"Random Forest Classification Report :\n {rf_result['classification_report']}")
     print(f"Random Forest Matrix :\n {rf_result['confusion_matrix']}")
 
-    ##Enregistrer les résultats
-    #Rapports de classification : 
-    save_classif_report(y_test, svm_result['y_pred'], 'assets/classif_report/svm_classification_report.txt')
-    save_classif_report(y_test, tree_result['y_pred'], 'assets/classif_report/tree_classification_report.txt')
-    save_classif_report(y_test, rf_result['y_pred'], 'assets/classif_report/rf_classification_report.txt')
+    # ##Enregistrer les résultats
+    # #Rapports de classification : 
+    # save_classif_report(y_test, svm_result['y_pred'], 'assets/classif_report/svm_classification_report.txt')
+    # save_classif_report(y_test, tree_result['y_pred'], 'assets/classif_report/tree_classification_report.txt')
+    # save_classif_report(y_test, rf_result['y_pred'], 'assets/classif_report/rf_classification_report.txt')
 
-    #Matrices de confusion
-    save_matrix(svm_result['confusion_matrix'], 'assets/matrice/svm_confusion_matrix.png')
-    save_matrix(tree_result['confusion_matrix'], 'assets/matrice/tree_confusion_matrix.png')
-    save_matrix(rf_result['confusion_matrix'], 'assets/matrice/rf_confusion_matrix.png')
+    # #Matrices de confusion
+    # save_matrix(svm_result['confusion_matrix'], 'assets/matrice/svm_confusion_matrix.png')
+    # save_matrix(tree_result['confusion_matrix'], 'assets/matrice/tree_confusion_matrix.png')
+    # save_matrix(rf_result['confusion_matrix'], 'assets/matrice/rf_confusion_matrix.png')
 
+    ##SENTIMENT ANALYSIS
+    #Classer les tweets selon l'étiquette prédite pour chaque modèle 
+    svm_true_news, svm_fake_news = classify_tweets(svm_result['y_pred'], X_test)
+    tree_true_news, tree_fake_news = classify_tweets(tree_result['y_pred'], X_test)
+    rf_true_news, rf_fake_news = classify_tweets(rf_result['y_pred'], X_test)
 
+    #Analyse de sentiment sur les listes classées
+    print("SVM Sentiment Analysis:")
+    svm_true_news_sentiment = sentiment_analysis_on_results(svm_true_news)
+    svm_fake_news_sentiment = sentiment_analysis_on_results(svm_fake_news)
+    print("True News Sentiment:", svm_true_news_sentiment)
+    print("Fake News Sentiment:", svm_fake_news_sentiment)
+
+    print("\nDecision Tree Sentiment Analysis:")
+    tree_true_news_sentiment = sentiment_analysis_on_results(tree_true_news)
+    tree_fake_news_sentiment = sentiment_analysis_on_results(tree_fake_news)
+    print("True News Sentiment:", tree_true_news_sentiment)
+    print("Fake News Sentiment:", tree_fake_news_sentiment)
+
+    print("\nRandom Forest Sentiment Analysis:")
+    rf_true_news_sentiment = sentiment_analysis_on_results(rf_true_news)
+    rf_fake_news_sentiment = sentiment_analysis_on_results(rf_fake_news)
+    print("True News Sentiment:", rf_true_news_sentiment)
+    print("Fake News Sentiment:", rf_fake_news_sentiment)
 
 if __name__ == "__main__":
     main()

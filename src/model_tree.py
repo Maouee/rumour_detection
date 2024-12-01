@@ -22,9 +22,9 @@ def train_and_evaluation(X_train, X_test, y_train, y_test) :
     #Matrice de confusion
     matrice = confusion_matrix(y_test, y_pred)
     disp = ConfusionMatrixDisplay(confusion_matrix=matrice, display_labels=tree_model.classes_)
-    plt.figure(figsize = (12, 7))
-    disp.plot(ax=plt.gca())
-    plt.title('Matrice de Confusion Tree')
-    plt.show()
+    # plt.figure(figsize = (12, 7))
+    # disp.plot(ax=plt.gca())
+    # plt.title('Matrice de Confusion Tree')
+    # plt.show()
     
     return {'y_pred': y_pred,'classification_report': report, 'confusion_matrix': matrice}
