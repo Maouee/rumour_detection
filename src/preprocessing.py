@@ -9,7 +9,7 @@ def conversion_donnees(dico) :
     df = pd.DataFrame.from_dict(dico, orient='index')
 
     #Conversion des étiquettes du df en valeurs numériques
-    df['label'] = df['label'].map({"true_news": 1, "fake_news": 2, "unverified" : 3})
+    df['label'] = df['label'].map({"true_news": 1, "fake_news": 0, "unverified" : 3})
     y = df['label']
     X = df['text']
 
