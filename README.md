@@ -1,6 +1,6 @@
 Dépôt pour le cours de Modélisation du TAL (2023_2024) - Master PluriTAL
 
-### Description du projet  
+# Description du projet  
 › Ce projet a été réalisé dans le cadre du cours "De la Modélisation au traitement automatique des données linguistiques" (2024_2025) - Master PluriTAL  
 › **Objectifs** : sélectionner un article de recherche en TAL, le lire, le comprendre en profondeur puis essayer de reproduire les résultats de l'article en modifiant certains aspects du travail original (le corpus, la méthode, les algorithmes etc.).  
 › Nous avons choisi de nous baser sur cet article : *AJAO, Seun, BHOWMIK, Deepayan and ZARGARI, Shahrzad (2019). Sentiment aware fake news detection on online social networks. 2019* (disponible ici http://shura.shu.ac.uk/24009/) et de modifier la méthode.
@@ -15,7 +15,7 @@ Dépôt pour le cours de Modélisation du TAL (2023_2024) - Master PluriTAL
 ## Corpus utilisé
 › **PHEME dataset of rumours and non-rumours**. Il contient des tweets divisés en rumeurs et non-rumeurs, liés à 5 événements.
 
-### Notre travail
+# Notre travail
 
 ## Corpus   
 › **PHEME dataset for Rumour Detection and Veracity Classification**  
