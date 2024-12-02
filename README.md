@@ -5,7 +5,7 @@ Dépôt pour le cours de Modélisation du TAL (2023_2024) - Master PluriTAL
 › **Objectifs** : sélectionner un article de recherche en TAL, le lire, le comprendre en profondeur puis essayer de reproduire les résultats de l'article en modifiant certains aspects du travail original (le corpus, la méthode, les algorithmes etc.).  
 › Nous avons choisi de nous baser sur cet article : *AJAO, Seun, BHOWMIK, Deepayan and ZARGARI, Shahrzad (2019). Sentiment aware fake news detection on online social networks. 2019* (disponible ici http://shura.shu.ac.uk/24009/) et de modifier la méthode.
 
-### Article étudié
+# Article étudié
 
 ## Hypothèse de l'article   
 › Hypothèse : Il existe une relation significative entre les sentiments/émotions exprimés dans un texte posté sur les réseaux sociaux et la probabilité que ce texte soit une fausse information/rumeur.  
